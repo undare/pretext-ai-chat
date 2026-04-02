@@ -24,8 +24,16 @@ export function ChatView({ sidebarCollapsed, onOpenSettings, conversation, onUpd
 
   const { streaming, send } = useChat(messages, handleMessagesChange)
 
+  const shouldAutoScroll = useRef(true)
+
+  const handleScroll = useCallback(() => {
+    if (!messageAreaRef.current) return
+    const { scrollTop, scrollHeight, clientHeight } = messageAreaRef.current
+    shouldAutoScroll.current = scrollHeight - scrollTop - clientHeight < 80
+  }, [])
+
   useEffect(() => {
-    if (messageAreaRef.current) {
+    if (messageAreaRef.current && shouldAutoScroll.current) {
       messageAreaRef.current.scrollTop = messageAreaRef.current.scrollHeight
     }
   }, [messages])
@@ -47,7 +55,7 @@ export function ChatView({ sidebarCollapsed, onOpenSettings, conversation, onUpd
 
   return (
     <main className={styles.chatView}>
-      <div className={styles.messageArea} ref={messageAreaRef}>
+      <div className={styles.messageArea} ref={messageAreaRef} onScroll={handleScroll}>
         {messages.length === 0 && (
           <div className={styles.emptyState}>
             {hasApiKey ? (

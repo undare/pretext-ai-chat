@@ -205,6 +205,141 @@
   overflow-wrap: break-word;
 }
 
+.streamingHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.streamingActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.actionButton {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: none;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.actionButton:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.toggleLabel input[type="checkbox"] {
+  accent-color: var(--text-primary);
+}
+
+.streamingProgress {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+}
+
+.streamingRender {
+  outline: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.dualPanel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+
+.panelTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.panelMetrics {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.panelMetrics strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.panelRender {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.anchor {
+  height: 0;
+  border-top: 1px solid var(--border);
+  margin: 4px 0;
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.summaryTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
 .match {
   color: #22c55e;
 }

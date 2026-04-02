@@ -19,6 +19,10 @@ import {
 const FONT = '14px Inter'
 const LINE_HEIGHT = 22.4 // 14 * 1.6
 
+// Message body uses 15px Inter with line-height 1.7
+const MESSAGE_FONT = '15px Inter'
+const MESSAGE_LINE_HEIGHT = 25.5 // 15 * 1.7
+
 /**
  * Predict the rendered height of a text block at a given width.
  * Returns { height, lineCount }.
@@ -27,6 +31,18 @@ export function measureHeight(text, maxWidth) {
   if (!text) return { height: 0, lineCount: 0 }
   const prepared = prepare(text, FONT)
   const result = layout(prepared, maxWidth, LINE_HEIGHT)
+  return { height: result.height, lineCount: result.lineCount }
+}
+
+/**
+ * Predict the rendered height of a message body text block.
+ * Uses 15px Inter / line-height 1.7 to match message CSS.
+ * Returns { height, lineCount }.
+ */
+export function measureMessageHeight(text, maxWidth) {
+  if (!text) return { height: 0, lineCount: 0 }
+  const prepared = prepare(text, MESSAGE_FONT)
+  const result = layout(prepared, maxWidth, MESSAGE_LINE_HEIGHT)
   return { height: result.height, lineCount: result.lineCount }
 }
 
