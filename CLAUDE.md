@@ -139,7 +139,7 @@ No bouncing, no elastic easing, no slow fades. Fast and crisp.
 
 ### Component specifics
 
-**Sidebar**: 260px wide, bg-secondary, right border. Selected chat = accent-subtle bg + 2px left accent bar.
+**Sidebar**: 260px wide, bg-secondary, right border. Selected chat = bg-tertiary background, no left bar.
 
 **AI messages**: No background. Left-aligned. Max-width 680px. 24px accent dot avatar on left.
 

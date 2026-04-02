@@ -1,4 +1,4 @@
-export async function* streamChat(apiKey, baseUrl, model, messages) {
+export async function* streamChat(apiKey, baseUrl, model, messages, signal) {
   const url = `${baseUrl}/v1/chat/completions`
 
   const res = await fetch(url, {
@@ -11,7 +11,8 @@ export async function* streamChat(apiKey, baseUrl, model, messages) {
       model,
       messages,
       stream: true
-    })
+    }),
+    signal
   })
 
   if (!res.ok) {

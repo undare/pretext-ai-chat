@@ -31,7 +31,7 @@ export function useChat(messages, onMessagesChange) {
         content: m.content
       }))
 
-      const stream = streamChat(settings.apiKey, baseUrl, settings.model, apiMessages)
+      const stream = streamChat(settings.apiKey, baseUrl, settings.model, apiMessages, abortController.signal)
       let current = updated
 
       for await (const token of stream) {
