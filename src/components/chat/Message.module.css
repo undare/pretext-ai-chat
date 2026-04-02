@@ -12,13 +12,10 @@
 }
 
 .avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: var(--accent);
   flex-shrink: 0;
   margin-right: 12px;
   margin-top: 4px;
+  color: var(--text-tertiary);
 }
 
 .bubble {

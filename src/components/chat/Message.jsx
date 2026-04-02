@@ -1,3 +1,4 @@
+import { Sparkles } from 'lucide-preact'
 import styles from './Message.module.css'
 
 export function Message({ role, content, streaming, noKey, onOpenSettings }) {
@@ -5,7 +6,11 @@ export function Message({ role, content, streaming, noKey, onOpenSettings }) {
 
   return (
     <div className={`${styles.messageRow} ${isUser ? styles.user : styles.assistant}`}>
-      {!isUser && <div className={styles.avatar} />}
+      {!isUser && (
+        <div className={styles.avatar}>
+          <Sparkles size={16} />
+        </div>
+      )}
       <div className={`${styles.bubble} ${isUser ? styles.user : styles.assistant}`}>
         {noKey ? (
           <div>

@@ -141,7 +141,7 @@ No bouncing, no elastic easing, no slow fades. Fast and crisp.
 
 **Sidebar**: 260px wide, bg-secondary, right border. Selected chat = bg-tertiary background, no left bar.
 
-**AI messages**: No background. Left-aligned. Max-width 680px. 24px accent dot avatar on left.
+**AI messages**: No background. Left-aligned. Max-width 680px. 16px Sparkles icon (text-tertiary) on left.
 
 **User messages**: bg-tertiary background. Right-aligned. border-radius 12px.
 
