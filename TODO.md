@@ -23,16 +23,19 @@
 - [x] 验证亮色/暗色模式下所有组件颜色正确
 
 ### 1.4 设置面板
-- [ ] Settings 组件：API Key 输入框（密码模式，可切换显示）
-- [ ] 模型选择下拉（预设：gpt-4o, gpt-3.5-turbo, claude-sonnet）
-- [ ] API provider 选择（OpenAI / Anthropic）
-- [ ] 存储到 localStorage
+- [x] Settings 组件：API Key 输入框（密码模式，可切换显示）
+- [x] 自动识别 provider（sk-ant- → Anthropic，sk- → OpenAI 兼容）
+- [x] 输入 key 后显示识别结果（"✓ Detected: OpenAI"）
+- [x] 自动拉取可用模型列表（/v1/models），填充到下拉框
+- [x] 折叠式"高级设置"：自定义 API Base URL（默认隐藏）
+- [x] 存储到 localStorage（key, baseUrl, model, provider）
+- [x] key 无效时的错误提示
 
 ### 1.5 基本 Chat 功能
 - [ ] InputBar：多行文本框，Shift+Enter 换行，Enter 发送
 - [ ] 发送按钮：accent 色圆形，未输入时 disabled
 - [ ] 消息列表：用户消息右对齐 + AI 消息左对齐
-- [ ] OpenAI 流式 API 调用（SSE 解析）
+- [ ] 统一流式 API 调用（OpenAI 兼容格式，支持自定义 base URL）
 - [ ] 流式输出：逐 token 追加显示
 - [ ] 流式光标闪烁动画（竖线，800ms 周期）
 - [ ] 未配置 API Key 时的友好提示
@@ -123,7 +126,6 @@
 - [ ] 消息 Markdown 渲染（加粗、代码块、列表）
 - [ ] 代码块语法高亮
 - [ ] 导出对话为 Markdown 文件
-- [ ] Anthropic Claude API 接入
 - [ ] Benchmark 结果截图/导出
 - [ ] 移动端基础适配
 - [ ] 消息复制按钮

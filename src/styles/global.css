@@ -32,6 +32,7 @@
   --accent-hover: #4F4FD9;
   --accent-subtle: #EEF2FF;
   --text-on-accent: #FFFFFF;
+  --overlay: rgba(0, 0, 0, 0.4);
 }
 
 /* Dark mode */
@@ -53,6 +54,7 @@ html.dark {
   --accent-hover: #6B6BEF;
   --accent-subtle: #1A1A2E;
   --text-on-accent: #FFFFFF;
+  --overlay: rgba(0, 0, 0, 0.6);
 }
 
 /* Base styles */

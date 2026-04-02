@@ -42,8 +42,7 @@ src/
 ├── lib/
 │   ├── pretext-engine.js         # Pretext wrapper (prepare/layout/shrinkwrap)
 │   ├── stream.js                 # SSE stream parser
-│   ├── openai.js                 # OpenAI API
-│   ├── anthropic.js              # Claude API
+│   ├── api.js                    # Unified LLM API: auto-detect provider from key, fetch models, stream chat
 │   └── metrics.js                # CLS / Reflow / FPS collection
 └── hooks/
     ├── useChat.js                # conversation state
@@ -52,6 +51,19 @@ src/
 ```
 
 ## Key architecture decisions
+
+### API Key — auto-detect, zero config
+
+The Settings panel is deliberately simple: one input for the API key, that's it.
+
+- `sk-ant-*` → Anthropic provider, base URL `https://api.anthropic.com`
+- `sk-*` or anything else → OpenAI-compatible, base URL `https://api.openai.com`
+- User can optionally set a custom base URL (hidden under "Advanced settings" toggle) for proxies / relay services
+- After key is entered, auto-fetch model list via `/v1/models` endpoint
+- Model dropdown only appears after successful key validation
+- All stored in localStorage: `{ apiKey, baseUrl, model, provider }`
+
+Do NOT create separate provider/model selection dropdowns. The key itself tells us the provider.
 
 ### Pretext integration — four features, four APIs
 

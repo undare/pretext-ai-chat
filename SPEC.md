@@ -52,10 +52,30 @@
 - **量化指标**: 同屏可见消息数对比（预计提升 15-20%）
 
 #### 功能 D: API Key 配置 & 模型选择
-- **支持的 API**: OpenAI (GPT-4o, etc.)、Anthropic (Claude)、国内模型（可扩展）
-- **配置方式**: 侧边栏设置面板，填入 API Key + 选择模型
+- **设计原则**: 填一个 key 就能用，零配置上手
+- **自动识别**: 根据 key 前缀自动判断 provider（`sk-ant-` → Anthropic，`sk-` → OpenAI，其他 → 当作 OpenAI 兼容格式）
+- **模型列表**: 填完 key 后自动拉取可用模型（OpenAI `/v1/models` 接口），无需手动选 provider
+- **可选高级配置**: 折叠式的"自定义 API 地址"输入框，给用中转站/代理的用户（默认隐藏，点击"高级设置"展开）
 - **API 调用**: 直接从前端调用各 LLM 的流式 API（SSE / streaming）
 - **注意**: 这是纯前端产品，API Key 存在 localStorage，不经过任何后端
+
+**设置面板 UI（极简）：**
+```
+┌─────────────────────────────┐
+│  API Key                    │
+│  ┌────────────────────┬──┐  │
+│  │ sk-••••••••••••3kF │👁│  │
+│  └────────────────────┴──┘  │
+│  ✓ Detected: OpenAI         │
+│                             │
+│  Model                      │
+│  ┌────────────────────┬──┐  │
+│  │ gpt-4o             │ ▾│  │  ← 自动拉取的模型列表
+│  └────────────────────┴──┘  │
+│                             │
+│  ▸ Advanced settings        │  ← 点击展开自定义 API URL
+└─────────────────────────────┘
+```
 
 ### 2.3 Benchmark 模式
 
@@ -344,22 +364,44 @@ function shrinkwrap(text, font, maxWidth, lineHeight) {
 ```
 
 ### 5.3 LLM API 调用
+
+#### Provider 自动识别
 ```js
-// OpenAI 兼容格式的流式调用
-async function* streamChat(apiKey, model, messages) {
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+function detectProvider(apiKey) {
+  if (apiKey.startsWith('sk-ant-')) return 'anthropic'
+  return 'openai' // OpenAI 原生 + 所有 OpenAI 兼容格式（中转站、国内模型等）
+}
+
+function getBaseUrl(provider, customUrl) {
+  if (customUrl) return customUrl // 用户自定义的 API 地址优先
+  if (provider === 'anthropic') return 'https://api.anthropic.com'
+  return 'https://api.openai.com' // 默认 OpenAI
+}
+```
+
+#### 自动拉取模型列表
+```js
+async function fetchModels(apiKey, baseUrl) {
+  // OpenAI 兼容格式都支持 /v1/models
+  const res = await fetch(`${baseUrl}/v1/models`, {
+    headers: { 'Authorization': `Bearer ${apiKey}` }
+  })
+  const data = await res.json()
+  return data.data.map(m => m.id).sort()
+}
+```
+
+#### 流式调用（OpenAI 兼容格式）
+```js
+async function* streamChat(apiKey, model, messages, baseUrl) {
+  const response = await fetch(`${baseUrl}/v1/chat/completions`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${apiKey}`
     },
-    body: JSON.stringify({
-      model,
-      messages,
-      stream: true
-    })
+    body: JSON.stringify({ model, messages, stream: true })
   })
-  
   const reader = response.body.getReader()
   const decoder = new TextDecoder()
   // 解析 SSE 流，逐 token yield
@@ -412,8 +454,7 @@ pretext-display/
 │   ├── lib/
 │   │   ├── pretext-engine.js     # Pretext 封装（prepare/layout/shrinkwrap）
 │   │   ├── stream.js             # 通用 SSE 流式解析
-│   │   ├── openai.js             # OpenAI API 封装
-│   │   ├── anthropic.js          # Claude API 封装
+│   │   ├── api.js                # 统一 LLM API（自动识别 provider、拉取模型、流式调用）
 │   │   └── metrics.js            # CLS / Reflow / FPS 采集工具
 │   │
 │   └── hooks/

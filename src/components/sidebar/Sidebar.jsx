@@ -1,7 +1,7 @@
 import { Settings, PanelLeftClose, PanelLeft, Sun, Moon } from 'lucide-preact'
 import styles from './Sidebar.module.css'
 
-export function Sidebar({ collapsed, onToggle, dark, onToggleTheme }) {
+export function Sidebar({ collapsed, onToggle, dark, onToggleTheme, onOpenSettings }) {
   if (collapsed) {
     return (
       <button className={styles.toggleButton} onClick={onToggle}>
@@ -27,7 +27,7 @@ export function Sidebar({ collapsed, onToggle, dark, onToggleTheme }) {
         <button className={styles.iconButton} onClick={onToggleTheme}>
           {dark ? <Sun size={16} /> : <Moon size={16} />}
         </button>
-        <button className={styles.iconButton}>
+        <button className={styles.iconButton} onClick={onOpenSettings}>
           <Settings size={16} />
         </button>
       </div>
