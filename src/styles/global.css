@@ -31,6 +31,7 @@
   --accent: #5B5BF0;
   --accent-hover: #4F4FD9;
   --accent-subtle: #EEF2FF;
+  --text-on-accent: #FFFFFF;
 }
 
 /* Dark mode */
@@ -51,6 +52,7 @@ html.dark {
   --accent: #7B7BFF;
   --accent-hover: #6B6BEF;
   --accent-subtle: #1A1A2E;
+  --text-on-accent: #FFFFFF;
 }
 
 /* Base styles */

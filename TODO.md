@@ -12,10 +12,10 @@
 - [x] 确认 `npm run dev` 能跑起来
 
 ### 1.2 整体布局
-- [ ] `App.jsx`：Sidebar + Main Area 的 flex 布局
-- [ ] Sidebar 骨架：logo 区、对话列表区、底部图标区
-- [ ] Main Area 骨架：消息区 + 底部输入栏
-- [ ] 侧边栏折叠/展开
+- [x] `App.jsx`：Sidebar + Main Area 的 flex 布局
+- [x] Sidebar 骨架：logo 区、对话列表区、底部图标区
+- [x] Main Area 骨架：消息区 + 底部输入栏
+- [x] 侧边栏折叠/展开
 
 ### 1.3 主题切换
 - [ ] `useTheme` hook：读写 localStorage，切换 `<html>` 上的 class
