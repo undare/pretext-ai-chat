@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'preact/hooks'
+import { useState, useRef, useEffect, useCallback } from 'preact/hooks'
 import { ArrowUp } from 'lucide-preact'
 import { useChat } from '../../hooks/useChat'
 import { loadSettings } from '../../lib/api'
@@ -11,12 +11,18 @@ const PROMPTS = [
   '写一段 Python 代码'
 ]
 
-export function ChatView({ sidebarCollapsed, onOpenSettings }) {
+export function ChatView({ sidebarCollapsed, onOpenSettings, conversation, onUpdateMessages, onEnsureConversation }) {
   const [inputValue, setInputValue] = useState('')
-  const { messages, streaming, error, send } = useChat()
+  const messages = conversation?.messages || []
   const messageAreaRef = useRef(null)
   const hasContent = inputValue.trim().length > 0
   const hasApiKey = loadSettings().apiKey
+
+  const handleMessagesChange = useCallback((msgs) => {
+    onUpdateMessages(msgs)
+  }, [onUpdateMessages])
+
+  const { streaming, send } = useChat(messages, handleMessagesChange)
 
   useEffect(() => {
     if (messageAreaRef.current) {
@@ -28,6 +34,7 @@ export function ChatView({ sidebarCollapsed, onOpenSettings }) {
     const value = (text || inputValue).trim()
     if (!value || streaming) return
     setInputValue('')
+    onEnsureConversation(value)
     send(value)
   }
 

@@ -1,12 +1,9 @@
 import { useState, useRef, useCallback } from 'preact/hooks'
-import { loadSettings } from '../lib/api'
-import { getDefaultBaseUrl } from '../lib/api'
+import { loadSettings, getDefaultBaseUrl } from '../lib/api'
 import { streamChat } from '../lib/stream'
 
-export function useChat() {
-  const [messages, setMessages] = useState([])
+export function useChat(messages, onMessagesChange) {
   const [streaming, setStreaming] = useState(false)
-  const [error, setError] = useState('')
   const abortRef = useRef(null)
 
   const send = useCallback(async (text) => {
@@ -14,15 +11,14 @@ export function useChat() {
     if (!settings.apiKey || !settings.model) {
       const userMessage = { role: 'user', content: text }
       const noKeyMessage = { role: 'assistant', content: '', noKey: true }
-      setMessages(prev => [...prev, userMessage, noKeyMessage])
+      onMessagesChange([...messages, userMessage, noKeyMessage])
       return
     }
 
-    setError('')
     const userMessage = { role: 'user', content: text }
     const assistantMessage = { role: 'assistant', content: '' }
-
-    setMessages(prev => [...prev, userMessage, assistantMessage])
+    const updated = [...messages, userMessage, assistantMessage]
+    onMessagesChange(updated)
     setStreaming(true)
 
     const abortController = new AbortController()
@@ -36,25 +32,26 @@ export function useChat() {
       }))
 
       const stream = streamChat(settings.apiKey, baseUrl, settings.model, apiMessages)
+      let current = updated
 
       for await (const token of stream) {
         if (abortController.signal.aborted) break
-        setMessages(prev => {
-          const updated = [...prev]
-          const last = updated[updated.length - 1]
-          updated[updated.length - 1] = { ...last, content: last.content + token }
-          return updated
-        })
+        const next = [...current]
+        const last = next[next.length - 1]
+        next[next.length - 1] = { ...last, content: last.content + token }
+        current = next
+        onMessagesChange(next)
       }
     } catch (err) {
       if (!abortController.signal.aborted) {
-        setError(err.message)
+        const next = [...messages, userMessage, { role: 'assistant', content: err.message }]
+        onMessagesChange(next)
       }
     } finally {
       setStreaming(false)
       abortRef.current = null
     }
-  }, [messages])
+  }, [messages, onMessagesChange])
 
   const stop = useCallback(() => {
     if (abortRef.current) {
@@ -62,5 +59,5 @@ export function useChat() {
     }
   }, [])
 
-  return { messages, streaming, error, send, stop }
+  return { streaming, send, stop }
 }

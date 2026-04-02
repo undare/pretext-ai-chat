@@ -7,6 +7,21 @@
   box-sizing: border-box;
 }
 
+/* Cursor defaults */
+* {
+  cursor: default;
+}
+
+a, button, [role="button"], input, textarea, select, label[for] {
+  cursor: pointer;
+}
+
+input, textarea {
+  cursor: text;
+}
+
+/* Selection defaults — opt-in for text content */
+
 /* Font declarations */
 :root {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -74,6 +89,7 @@ html {
 
 body {
   min-height: 100vh;
+  user-select: none;
 }
 
 #app {

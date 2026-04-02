@@ -134,7 +134,7 @@ No bouncing, no elastic easing, no slow fades. Fast and crisp.
 ### Borders and shadows
 
 - Borders: 1px solid var(--border). Never 0.5px, never 2px (except focus ring).
-- Shadows: NONE. Only exception: input focus → `box-shadow: 0 0 0 2px var(--bg-tertiary)`
+- Shadows: NONE. Exceptions: input focus → `box-shadow: 0 0 0 2px var(--bg-tertiary)`, dropdown menus → `box-shadow: 0 2px 8px var(--overlay)`
 - Border-radius: 8px (default), 12px (cards/bubbles), 20px (pill buttons/inputs)
 
 ### Component specifics
