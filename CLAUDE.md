@@ -107,6 +107,7 @@ Reference: Linear-inspired, developer aesthetic. Read SPEC.md Section 4 for full
 - Light: white bg, #111 text, #E5E7EB borders, #111 accent (black/white/gray only, no colors)
 - Dark: #0A0A0A bg, #F0F0F0 text, #222 borders, #F0F0F0 accent (black/white/gray only, no colors)
 - Theme toggle switches a class on `<html>`, all components use CSS variables
+- Exception: Lab/debug UI may use semantic colors (green for success, red for error) to indicate pass/fail status
 
 ### Typography — only these four levels
 

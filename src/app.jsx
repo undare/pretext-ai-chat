@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from 'preact/hooks'
 import { Sidebar } from './components/sidebar/Sidebar'
 import { ChatView } from './components/chat/ChatView'
+import { LabView } from './components/lab/LabView'
 import { Settings } from './components/sidebar/Settings'
 import { useTheme } from './hooks/useTheme'
 import { useConversations } from './hooks/useConversations'
@@ -9,6 +10,7 @@ import styles from './app.module.css'
 export function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [view, setView] = useState('chat')
   const { dark, toggle: toggleTheme } = useTheme()
   const {
     conversations,
@@ -44,6 +46,7 @@ export function App() {
         dark={dark}
         onToggleTheme={toggleTheme}
         onOpenSettings={() => setSettingsOpen(true)}
+        onOpenLab={() => setView(view === 'lab' ? 'chat' : 'lab')}
         conversations={conversations}
         activeId={activeId}
         onSelectChat={setActiveConversation}
@@ -51,13 +54,17 @@ export function App() {
         onRenameChat={renameConversation}
         onDeleteChat={deleteConversation}
       />
-      <ChatView
-        sidebarCollapsed={sidebarCollapsed}
-        onOpenSettings={() => setSettingsOpen(true)}
-        conversation={activeConversation}
-        onUpdateMessages={handleUpdateMessages}
-        onEnsureConversation={handleEnsureConversation}
-      />
+      {view === 'chat' ? (
+        <ChatView
+          sidebarCollapsed={sidebarCollapsed}
+          onOpenSettings={() => setSettingsOpen(true)}
+          conversation={activeConversation}
+          onUpdateMessages={handleUpdateMessages}
+          onEnsureConversation={handleEnsureConversation}
+        />
+      ) : (
+        <LabView onClose={() => setView('chat')} />
+      )}
       {settingsOpen && <Settings onClose={() => setSettingsOpen(false)} />}
     </div>
   )
