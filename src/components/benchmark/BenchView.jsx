@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'preact/hooks'
-import { X } from 'lucide-preact'
+import { X, Type } from 'lucide-preact'
 import { prepare, layout } from '@chenglou/pretext'
 import { FONT, LINE_HEIGHT } from '../../lib/pretext-engine'
 import { createFPSTracker } from '../../lib/metrics'
@@ -25,6 +25,9 @@ const CONTAINER_WIDTH = 560
 export function BenchView({ onClose }) {
   const [speed, setSpeed] = useState(30)
   const [sampleIdx, setSampleIdx] = useState(0)
+  const [customText, setCustomText] = useState(null)
+  const [showCustomModal, setShowCustomModal] = useState(false)
+  const [customDraft, setCustomDraft] = useState('')
   const [running, setRunning] = useState(false)
   const [done, setDone] = useState(false)
   const [charIndex, setCharIndex] = useState(0)
@@ -43,7 +46,7 @@ export function BenchView({ onClose }) {
   const nativeReflowsRef = useRef(0)
   const fpsTracker = useRef(createFPSTracker())
 
-  const text = SAMPLES[sampleIdx].text
+  const text = customText !== null ? customText : SAMPLES[sampleIdx].text
 
   const reset = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current)
@@ -131,7 +134,7 @@ export function BenchView({ onClose }) {
   // Reset when sample changes
   useEffect(() => {
     reset()
-  }, [sampleIdx, reset])
+  }, [sampleIdx, customText, reset])
 
   const progress = text.length > 0 ? Math.round((charIndex / text.length) * 100) : 0
   const reduction = done && nativeJumps > 0
@@ -153,13 +156,26 @@ export function BenchView({ onClose }) {
           {SAMPLES.map((s, i) => (
             <button
               key={i}
-              className={`${styles.sampleButton} ${sampleIdx === i ? styles.active : ''}`}
-              onClick={() => { if (!running) setSampleIdx(i) }}
+              className={`${styles.sampleButton} ${customText === null && sampleIdx === i ? styles.active : ''}`}
+              onClick={() => { if (!running) { setCustomText(null); setSampleIdx(i) } }}
               disabled={running}
             >
               {s.label}
             </button>
           ))}
+          <button
+            className={`${styles.sampleButton} ${customText !== null ? styles.active : ''}`}
+            onClick={() => {
+              if (!running) {
+                setCustomDraft(customText || '')
+                setShowCustomModal(true)
+              }
+            }}
+            disabled={running}
+          >
+            <Type size={12} className={styles.customIcon} />
+            自定义
+          </button>
         </div>
 
         <div className={styles.speedControl}>
@@ -256,15 +272,6 @@ export function BenchView({ onClose }) {
               纯 JS 计算
             </span>
           </div>
-          <div className={styles.metricCard}>
-            <span className={styles.metricCardLabel}>FPS</span>
-            <span className={`${styles.metricCardValue} ${fps >= 30 ? styles.good : styles.bad}`}>
-              {fps}
-            </span>
-            <span className={`${styles.metricCardStatus} ${fps >= 30 ? styles.good : styles.bad}`}>
-              {fps >= 30 ? 'Smooth' : 'Janky'}
-            </span>
-          </div>
         </div>
       )}
 
@@ -275,6 +282,52 @@ export function BenchView({ onClose }) {
           {reduction !== null && (
             <span className={styles.good}>（减少 {reduction}%）</span>
           )}
+        </div>
+      )}
+      {/* Custom text modal */}
+      {showCustomModal && (
+        <div className={styles.modalOverlay} onClick={() => setShowCustomModal(false)}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <span className={styles.modalTitle}>自定义文本</span>
+              <button className={styles.closeButton} onClick={() => setShowCustomModal(false)}>
+                <X size={16} />
+              </button>
+            </div>
+            <textarea
+              className={styles.modalTextarea}
+              value={customDraft}
+              onInput={(e) => setCustomDraft(e.target.value)}
+              placeholder="粘贴或输入你想测试的文本..."
+              autoFocus
+            />
+            <div className={styles.modalFooter}>
+              {customText !== null && (
+                <button
+                  className={styles.modalClearButton}
+                  onClick={() => {
+                    setCustomText(null)
+                    setShowCustomModal(false)
+                  }}
+                >
+                  恢复预设
+                </button>
+              )}
+              <button
+                className={styles.modalConfirmButton}
+                onClick={() => {
+                  const trimmed = customDraft.trim()
+                  if (trimmed) {
+                    setCustomText(trimmed)
+                    setShowCustomModal(false)
+                  }
+                }}
+                disabled={!customDraft.trim()}
+              >
+                使用此文本
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

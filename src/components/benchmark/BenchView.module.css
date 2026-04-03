@@ -85,6 +85,11 @@
   cursor: default;
 }
 
+.customIcon {
+  margin-right: 4px;
+  vertical-align: -1px;
+}
+
 .speedControl {
   display: flex;
   align-items: center;
@@ -304,4 +309,113 @@
   border-top: 1px solid var(--border);
   font-size: 14px;
   color: var(--text-primary);
+}
+
+/* === Custom text modal === */
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  width: 560px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--overlay);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px 12px;
+}
+
+.modalTitle {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.modalTextarea {
+  margin: 0 24px;
+  height: 240px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: all 150ms ease;
+}
+
+.modalTextarea:focus {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 0 2px var(--bg-tertiary);
+}
+
+.modalTextarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.modalFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 24px 16px;
+}
+
+.modalClearButton {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: none;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.modalClearButton:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.modalConfirmButton {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.modalConfirmButton:hover {
+  opacity: 0.9;
+}
+
+.modalConfirmButton:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
