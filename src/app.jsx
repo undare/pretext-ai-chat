@@ -2,6 +2,7 @@ import { useState, useCallback, useRef } from 'preact/hooks'
 import { Sidebar } from './components/sidebar/Sidebar'
 import { ChatView } from './components/chat/ChatView'
 import { LabView } from './components/lab/LabView'
+import { BenchView } from './components/benchmark/BenchView'
 import { Settings } from './components/sidebar/Settings'
 import { useTheme } from './hooks/useTheme'
 import { useConversations } from './hooks/useConversations'
@@ -47,6 +48,7 @@ export function App() {
         onToggleTheme={toggleTheme}
         onOpenSettings={() => setSettingsOpen(true)}
         onOpenLab={() => setView(view === 'lab' ? 'chat' : 'lab')}
+        onOpenBench={() => setView(view === 'bench' ? 'chat' : 'bench')}
         conversations={conversations}
         activeId={activeId}
         onSelectChat={setActiveConversation}
@@ -54,7 +56,7 @@ export function App() {
         onRenameChat={renameConversation}
         onDeleteChat={deleteConversation}
       />
-      {view === 'chat' ? (
+      {view === 'chat' && (
         <ChatView
           sidebarCollapsed={sidebarCollapsed}
           onOpenSettings={() => setSettingsOpen(true)}
@@ -62,9 +64,9 @@ export function App() {
           onUpdateMessages={handleUpdateMessages}
           onEnsureConversation={handleEnsureConversation}
         />
-      ) : (
-        <LabView onClose={() => setView('chat')} />
       )}
+      {view === 'lab' && <LabView onClose={() => setView('chat')} />}
+      {view === 'bench' && <BenchView onClose={() => setView('chat')} />}
       {settingsOpen && <Settings onClose={() => setSettingsOpen(false)} />}
     </div>
   )

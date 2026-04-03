@@ -1,5 +1,5 @@
 import { useState, useRef } from 'preact/hooks'
-import { Settings, PanelLeftClose, PanelLeft, Sun, Moon, Plus, MoreHorizontal, FlaskConical } from 'lucide-preact'
+import { Settings, PanelLeftClose, PanelLeft, Sun, Moon, Plus, MoreHorizontal, FlaskConical, Gauge } from 'lucide-preact'
 import styles from './Sidebar.module.css'
 
 export function Sidebar({
@@ -9,6 +9,7 @@ export function Sidebar({
   onToggleTheme,
   onOpenSettings,
   onOpenLab,
+  onOpenBench,
   conversations,
   activeId,
   onSelectChat,
@@ -148,6 +149,9 @@ export function Sidebar({
       <div className={styles.footer}>
         <button className={styles.iconButton} onClick={onToggleTheme}>
           {dark ? <Sun size={16} /> : <Moon size={16} />}
+        </button>
+        <button className={styles.iconButton} onClick={onOpenBench} title="Rendering Benchmark">
+          <Gauge size={16} />
         </button>
         <button className={styles.iconButton} onClick={onOpenLab} title="Rendering Lab">
           <FlaskConical size={16} />
