@@ -112,9 +112,9 @@
 - [x] 设置偏好持久化（主题、上次选择的模型）
 
 ### 3.5 部署
-- [ ] `npm run build` 确认产出正常
-- [ ] GitHub repo 创建（htchn/pretext-display 或最终产品名）
-- [ ] GitHub Pages 部署配置（vite.config.js 设置 base）
+- [x] `npm run build` 确认产出正常
+- [x] GitHub repo 创建（htchn/pretext-display 或最终产品名）
+- [x] GitHub Pages 部署配置（vite.config.js 设置 base）
 - [ ] 验证线上可访问
 
 ### 3.6 README
